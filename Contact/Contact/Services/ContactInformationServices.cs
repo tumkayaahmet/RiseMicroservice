@@ -7,7 +7,7 @@ using Shared.Messages;
 
 namespace Contact.Services
 {
-    internal class ContactInformationServices : IContactInformationServices
+    public class ContactInformationServices : IContactInformationServices
     {
         private readonly IMongoCollection<ContactInformation> _contactInformationCollection;
         private readonly IMapper _mapper;
