@@ -55,7 +55,7 @@ namespace Contact.Services
 
             if (person == null)
             {
-                return Response<PersonDto>.Fail("Person not found", 404);
+                return Response<PersonDto>.Fail(ResponseMessages.PersonNotFound, 404);
             }
             return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person), 200);
         }
