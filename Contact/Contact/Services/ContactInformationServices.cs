@@ -7,11 +7,10 @@ using Shared.Messages;
 
 namespace Contact.Services
 {
-    internal class ContactInformationServices
+    internal class ContactInformationServices : IContactInformationServices
     {
         private readonly IMongoCollection<ContactInformation> _contactInformationCollection;
         private readonly IMapper _mapper;
-
         public ContactInformationServices(IMapper mapper, IDatabaseSettings databaseSettings)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
@@ -27,7 +26,6 @@ namespace Contact.Services
             return Response<List<ContactInformationDto>>.Success(_mapper.Map<List<ContactInformationDto>>(contactInformation), 200);
 
         }
-
         public async Task<Response<ContactInformationDto>> CreateAsync(ContactInformationCreateDto contactInformationCreateDto)
         {
             var newContactInformation = _mapper.Map<ContactInformation>(contactInformationCreateDto);

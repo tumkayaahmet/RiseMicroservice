@@ -13,9 +13,7 @@ namespace Contact.Services
     {
         private readonly IMongoCollection<Person> _personCollection;
         private readonly IMongoCollection<ContactInformation> _contactInformationCollection;
-
         private readonly IMapper _mapper;
-
         public PersonServices(IMapper mapper, IDatabaseSettings databaseSettings)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
@@ -42,13 +40,11 @@ namespace Contact.Services
             }
             return Response<List<PersonDto>>.Success(_mapper.Map<List<PersonDto>>(persons), 200);
         }
-
         public async Task<Response<PersonDto>> CreatePersonAsync(Person person)
         {
             await _personCollection.InsertOneAsync(person);
             return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person),ResponseMessages.PersonAdded, 200);
         }
-
         public async Task<Response<PersonDto>> GetByIdAsync(string id)
         {
             var person = await _personCollection.Find<Person>(x => x.Id == id).FirstOrDefaultAsync();
