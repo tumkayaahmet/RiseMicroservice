@@ -55,9 +55,28 @@ namespace Contact.Services
             }
             return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person), 200);
         }
+        public async Task<Response<NoContent>> UpdateAsync(PersonUpdateDto personUpdateDto)
+        {
+            var updatePerson = _mapper.Map<Person>(personUpdateDto);
+            var result = await _personCollection.FindOneAndReplaceAsync(x => x.Id == personUpdateDto.Id, updatePerson);
 
-
-
-
+            if (result == null)
+            {
+                return Response<NoContent>.Fail(ResponseMessages.PersonNotFound, 404);
+            }
+            return Response<NoContent>.Success(ResponseMessages.PersonUpdated, 204);
+        }
+        public async Task<Response<NoContent>> DeleteAsync(string id)
+        {
+            var result = await _personCollection.DeleteOneAsync(x => x.Id == id);
+            if (result.DeletedCount > 0)
+            {
+                return Response<NoContent>.Success(ResponseMessages.PersonDeleted, 204);
+            }
+            else
+            {
+                return Response<NoContent>.Fail(ResponseMessages.PersonNotFound, 404);
+            }
+        }
     }
 }

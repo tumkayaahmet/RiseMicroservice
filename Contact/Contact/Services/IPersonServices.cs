@@ -8,6 +8,8 @@ namespace Contact.Services
         Task<Response<List<PersonDto>>> GetAllAsync();
         Task<Response<PersonDto>> CreatePersonAsync(Person person);
         Task<Response<PersonDto>> GetByIdAsync(string id);
+        Task<Response<NoContent>> UpdateAsync(PersonUpdateDto personDto);
+        Task<Response<NoContent>> DeleteAsync(string id);
 
     }
 }
