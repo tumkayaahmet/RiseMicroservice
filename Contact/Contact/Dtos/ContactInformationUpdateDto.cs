@@ -1,6 +1,8 @@
-﻿namespace Contact.Dtos
+﻿using Contact.Models;
+
+namespace Contact.Dtos
 {
-    public class ContactInformationUpdateDto
+    public class ContactInformationUpdateDto : PropertyClass
     {
         public string Id { get; set; }
 

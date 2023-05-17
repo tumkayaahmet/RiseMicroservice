@@ -4,7 +4,7 @@ using MongoDB.Bson;
 
 namespace Contact.Dtos
 {
-    public class ContactInformationDto
+    public class ContactInformationDto : PropertyClass
     {
         public string Id { get; set; }
         public string PhoneNumber { get; set; }
