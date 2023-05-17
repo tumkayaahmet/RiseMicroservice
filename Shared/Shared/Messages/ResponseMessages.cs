@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 
 namespace Shared.Messages
 {
-    //public enum ResponseMessages
-    //{
-    //    ContactInfrormationNotFound = "Contact information not found";
-    //}
-
     public static class ResponseMessages
     {
         public const string PersonNotFound = "Person not found";
         public const string PersonAdded = "Person added";
         public const string PersonUpdated = "Person updated";
-        public const string PersonDeleted = "Person deleted"; 
+        public const string PersonDeleted = "Person deleted";
 
         public const string ContactInfrormationNotFound = "Contact information not found";
         public const string ContactInfrormationAdded = "Contact information added";

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Contact.Dtos;
 using Contact.Models;
 using Contact.Settings;
 using MongoDB.Driver;
 using Shared.Dtos;
 using Shared.Messages;
-using System;
 
 namespace Contact.Services
 {
@@ -25,7 +23,7 @@ namespace Contact.Services
 
         public async Task<Response<List<ContactInformationDto>>> GetAllByPersonIdAsync(string personId)
         {
-            var contactInformation = await _contactInformationollection.Find<ContactInformation>(x =>  x.PersonId == personId).ToListAsync();
+            var contactInformation = await _contactInformationCollection.Find<ContactInformation>(x =>  x.PersonId == personId).ToListAsync();
             return Response<List<ContactInformationDto>>.Success(_mapper.Map<List<ContactInformationDto>>(contactInformation), 200);
 
         }

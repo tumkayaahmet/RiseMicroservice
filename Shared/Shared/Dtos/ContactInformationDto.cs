@@ -1,10 +1,12 @@
-﻿using Contact.Models;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Contact.Dtos
+namespace Shared.Dtos
 {
-    public class ContactInformationDto : PropertyClass
+    public class ContactInformationDto : BaseClass
     {
         public string Id { get; set; }
         public string PhoneNumber { get; set; }
