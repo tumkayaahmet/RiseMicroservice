@@ -1,5 +1,4 @@
-﻿using Contact.Dtos;
-using Contact.Models;
+﻿using Contact.Models;
 using Shared.Dtos;
 
 namespace Contact.Services
