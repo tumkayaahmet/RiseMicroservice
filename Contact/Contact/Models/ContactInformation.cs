@@ -1,9 +1,10 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Shared.Dtos;
 
 namespace Contact.Models
 {
-    public class ContactInformation : PropertyClass
+    public class ContactInformation : BaseClass
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -15,9 +16,7 @@ namespace Contact.Models
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string PersonId { get; set; }
-
-        [BsonIgnore]
-        public Person Person { get; set; }
+        
 
     }
 }

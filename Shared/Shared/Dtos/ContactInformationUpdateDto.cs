@@ -14,7 +14,7 @@ namespace Shared.Dtos
         public string Email { get; set; }
         public string Location { get; set; }
         public string InformationContent { get; set; }
-        public string PersonId { get; set; }
+        public string PersonId { get; set; } 
 
     }
 }

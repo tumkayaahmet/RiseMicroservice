@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using Contact.Dtos;
 using Contact.Models;
 using Contact.Settings;
 using MongoDB.Driver;
 using Shared.Dtos;
 using Shared.Messages;
-using System.Diagnostics.Eventing.Reader;
+using System;
+using System.Collections.Generic;
 
 namespace Contact.Services
 {
-    internal class PersonServices : IPersonServices
+    public class PersonServices : IPersonServices
     {
         private readonly IMongoCollection<Person> _personCollection;
         private readonly IMongoCollection<ContactInformation> _contactInformationCollection;
@@ -20,18 +20,21 @@ namespace Contact.Services
             var database = client.GetDatabase(databaseSettings.DatabaseName);
 
             _personCollection = database.GetCollection<Person>(databaseSettings.PersonCollectionName);
+            _contactInformationCollection = database.GetCollection<ContactInformation>(databaseSettings.ContactInfromationCollectionName);
             _mapper = mapper;
         }
 
         public async Task<Response<List<PersonDto>>> GetAllAsync()
         {
             var persons = await _personCollection.Find(person => true).ToListAsync();
-
+            
             if (persons.Any())
             {
-                foreach (var person in persons)
+                foreach (var person in persons) 
                 {
-                    person.contactInformation = await _contactInformationCollection.Find<ContactInformation>(x => x.PersonId == person.Id).FirstAsync();
+                    var contactInformation = await _contactInformationCollection.Find<ContactInformation>(x => x.PersonId == person.Id).ToListAsync();
+                    List<ContactInformation> list = new List<ContactInformation>(_mapper.Map<List<ContactInformation>>(contactInformation));
+                    person.ContactInformation = list;
                 }
             }
             else
@@ -40,10 +43,12 @@ namespace Contact.Services
             }
             return Response<List<PersonDto>>.Success(_mapper.Map<List<PersonDto>>(persons), 200);
         }
-        public async Task<Response<PersonDto>> CreatePersonAsync(Person person)
+        public async Task<Response<PersonDto>> CreateAsync(PersonCreateDto personCreateDto)
         {
-            await _personCollection.InsertOneAsync(person);
-            return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person),ResponseMessages.PersonAdded, 200);
+            var newPerson = _mapper.Map<Person>(personCreateDto);
+
+            await _personCollection.InsertOneAsync(newPerson);
+            return Response<PersonDto>.Success(_mapper.Map<PersonDto>(newPerson),ResponseMessages.PersonAdded, 200);
         }
         public async Task<Response<PersonDto>> GetByIdAsync(string id)
         {
@@ -55,9 +60,29 @@ namespace Contact.Services
             }
             return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person), 200);
         }
+        public async Task<Response<NoContent>> UpdateAsync(PersonUpdateDto personUpdateDto)
+        {
+            var updatePerson = _mapper.Map<Person>(personUpdateDto);
+            var result = await _personCollection.FindOneAndReplaceAsync(x => x.Id == personUpdateDto.Id, updatePerson);
 
-
-
-
+            if (result == null)
+            {
+                return Response<NoContent>.Fail(ResponseMessages.PersonNotFound, 404);
+            }
+            return Response<NoContent>.Success(ResponseMessages.PersonUpdated, 204);
+        }
+        public async Task<Response<NoContent>> DeleteAsync(string id)
+        {
+            var result = await _personCollection.DeleteOneAsync(x => x.Id == id);
+            if (result.DeletedCount > 0)
+            {
+                return Response<NoContent>.Success(ResponseMessages.PersonDeleted, 204);
+            }
+            else
+            {
+                return Response<NoContent>.Fail(ResponseMessages.PersonNotFound, 404);
+            }
+        }
+ 
     }
 }
