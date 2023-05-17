@@ -1,6 +1,8 @@
-﻿namespace Contact.Dtos
+﻿using Contact.Models;
+
+namespace Contact.Dtos
 {
-    public class PersonCreateDto
+    public class PersonCreateDto : PropertyClass
     {
         public string Name { get; set; }
         public string Surname { get; set; }

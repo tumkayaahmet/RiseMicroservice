@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace Contact.Models
 {
-    public class ContactInformation
+    public class ContactInformation : PropertyClass
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
