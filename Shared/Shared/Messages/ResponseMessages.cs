@@ -17,6 +17,14 @@ namespace Shared.Messages
         public const string ContactInfrormationAdded = "Contact information added";
         public const string ContactInfrormationUpdated = "Contact information updated";
         public const string ContactInfrormationDeleted = "Contact information deleted";
+
+        public const string ReportDetailPreparing = "Report is Preparing";
+        public const string ReportDetailCompleted = "Report is Completed";
+        public const string ReportDetailNotFound = "Related report not found";
+
+        public const string DataCount = "Data Count : ";
+        public const string Success = "Success";
+
     }
 
 }
