@@ -27,7 +27,7 @@ namespace Contact.Services
         public async Task<Response<List<PersonDto>>> GetAllAsync()
         {
             var persons = await _personCollection.Find(person => true).ToListAsync();
-            
+            var personCount = persons.Count();
             if (persons.Any())
             {
                 foreach (var person in persons) 
@@ -41,7 +41,7 @@ namespace Contact.Services
             {
                 persons = new List<Person>();
             }
-            return Response<List<PersonDto>>.Success(_mapper.Map<List<PersonDto>>(persons), 200);
+            return Response<List<PersonDto>>.Success(_mapper.Map<List<PersonDto>>(persons),ResponseMessages.DataCount + personCount, 200);
         }
         public async Task<Response<PersonDto>> CreateAsync(PersonCreateDto personCreateDto)
         {
@@ -58,11 +58,12 @@ namespace Contact.Services
             {
                 return Response<PersonDto>.Fail(ResponseMessages.PersonNotFound, 404);
             }
-            return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person), 200);
+            return Response<PersonDto>.Success(_mapper.Map<PersonDto>(person),ResponseMessages.Success, 200);
         }
         public async Task<Response<NoContent>> UpdateAsync(PersonUpdateDto personUpdateDto)
         {
             var updatePerson = _mapper.Map<Person>(personUpdateDto);
+            updatePerson.ModifyDate = DateTime.Now;
             var result = await _personCollection.FindOneAndReplaceAsync(x => x.Id == personUpdateDto.Id, updatePerson);
 
             if (result == null)

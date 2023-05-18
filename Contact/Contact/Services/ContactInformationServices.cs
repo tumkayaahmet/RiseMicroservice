@@ -23,7 +23,8 @@ namespace Contact.Services
         public async Task<Response<List<ContactInformationDto>>> GetAllByPersonIdAsync(string personId)
         {
             var contactInformation = await _contactInformationCollection.Find<ContactInformation>(x =>  x.PersonId == personId).ToListAsync();
-            return Response<List<ContactInformationDto>>.Success(_mapper.Map<List<ContactInformationDto>>(contactInformation), 200);
+            var ContactInformationCount = contactInformation.Count();
+            return Response<List<ContactInformationDto>>.Success(_mapper.Map<List<ContactInformationDto>>(contactInformation),ResponseMessages.DataCount + ContactInformationCount, 200);
 
         }
         public async Task<Response<ContactInformationDto>> CreateAsync(ContactInformationCreateDto contactInformationCreateDto)
@@ -36,6 +37,7 @@ namespace Contact.Services
         public async Task<Response<NoContent>> UpdateAsync(ContactInformationUpdateDto contactInformationUpdateDto)
         {
             var updateContactInformation = _mapper.Map<ContactInformation>(contactInformationUpdateDto);
+            updateContactInformation.ModifyDate = DateTime.Now;
             var result = await _contactInformationCollection.FindOneAndReplaceAsync(x => x.Id == contactInformationUpdateDto.Id, updateContactInformation);
 
             if (result == null)
