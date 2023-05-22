@@ -23,6 +23,7 @@ namespace Report.Services
             _reportDetailMongoCollection = database.GetCollection<ReportDetail>(databaseSettings.ReportCollectionName);
             _mapper = mapper;
         }
+
         public async Task<Response<ReportDetailDto>> GetAllReportAsync()
         {
             var reportDetail = new ReportDetailCreateDto();

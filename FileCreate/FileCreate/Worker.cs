@@ -34,48 +34,6 @@ namespace FileCreate
             var consumer = new AsyncEventingBasicConsumer(_channel);
             _channel.BasicConsume(RabbitMQClientService.QueueName, false, consumer);
             consumer.Received += Consumer_Received;
-            //consumer.Received += async (model, ea) =>
-            //{
-            //    //var reportDataEvent = JsonSerializer.Deserialize<ReportDto>(Encoding.UTF8.GetString(ea.Body.ToArray()));
-            //    var body = ea.Body.ToArray();
-            //      mqBody = Encoding.UTF8.GetString(body);
-            //    var reportDataEvent = JsonSerializer.Deserialize<ReportDto>(mqBody);
-            //    if (reportDataEvent != null)
-            //    {
-            //        using var ms = new MemoryStream();
-            //        var wb = new XLWorkbook();
-            //        var ds = new DataSet();
-            //        ds.Tables.Add(GetExcelDataTable(reportDataEvent));
-
-
-            //        wb.Worksheets.Add(ds);
-            //        wb.SaveAs(ms);
-
-            //        MultipartFormDataContent multipartFormDataContent = new();
-
-            //        multipartFormDataContent.Add(new ByteArrayContent(ms.ToArray()), "file", Guid.NewGuid().ToString() + ".xlsx");
-
-            //        var baseUrl = "https://localhost:5222/api/file";
-
-            //        using (var httpClient = new HttpClient())
-            //        {
-
-            //            var response = await httpClient.PostAsync($"{baseUrl}?reportDetailId={reportDataEvent.ReportDetailId}", multipartFormDataContent);
-
-            //            if (response.IsSuccessStatusCode)
-            //            {
-            //                _channel.BasicAck(ea.DeliveryTag, false);
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-
-            //    }
-
-            //};
-
-
             return Task.CompletedTask;
         }
 
@@ -83,7 +41,6 @@ namespace FileCreate
         {
             try
             {
-                //var reportDataEvent = JsonSerializer.Deserialize<ReportDto>(Encoding.UTF8.GetString(@event.Body.ToArray()));
                 var body = @event.Body.ToArray();
                 mqBody = Encoding.UTF8.GetString(body);
                 var reportDataEvent = JsonConvert.DeserializeObject<List<ReportDto>>(mqBody);
@@ -126,12 +83,6 @@ namespace FileCreate
             table.Columns.Add("ReportDetailId", typeof(string));
             table.Columns.Add("Location", typeof(string));
             table.Columns.Add("PersonCount", typeof(int));
-
-            //table.Rows.Add(new ReportDto()
-            //{
-            //    Location = reportDto.Location,
-            //    PersonCount = reportDto.PersonCount
-            //});
 
             reportDto.ForEach(x =>
             {

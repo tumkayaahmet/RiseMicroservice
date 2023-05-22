@@ -26,6 +26,11 @@ namespace Shared.Dtos
         {
             return new Response<T> { Data = data, StatusCode = statusCode, IsSuccess = true };
         }
+        public static Response<T> Success(T data,T _data, int statusCode)
+        {
+            return new Response<T> { Data = data, StatusCode = statusCode, IsSuccess = true };
+        }
+
 
         public static Response<T> Success(string successMessage, int statusCode)
         {
