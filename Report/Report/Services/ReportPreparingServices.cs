@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Report.Models;
 using Report.Settings;
 using Shared.Dtos;
 using Shared.Messages;
+using System.Net.Http;
 
 namespace Report.Services
 {
@@ -32,6 +34,20 @@ namespace Report.Services
             var newReportDetail = _mapper.Map<ReportDetail>(reportDetail);
 
             await _reportDetailMongoCollection.InsertOneAsync(newReportDetail);
+
+            var baseUrl = "http://localhost:5191/api/Report?reportDetailId=";
+
+            using (var httpClient = new HttpClient())
+            {
+
+                var response = await httpClient.GetAsync(baseUrl + newReportDetail.Id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //return OkResult();
+                }
+            }
+
             return Response<ReportDetailDto>.Success(_mapper.Map<ReportDetailDto>(newReportDetail), ResponseMessages.ReportDetailPreparing, 200);
         }
     }
