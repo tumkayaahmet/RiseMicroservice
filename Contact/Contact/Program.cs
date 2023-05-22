@@ -1,6 +1,7 @@
 using Contact.Services;
 using Contact.Settings;
 using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSingleton<ConnectionFactory>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("RabbitMQ");
 
+    return new ConnectionFactory
+    {
+        Uri = new Uri(connectionString),
+        DispatchConsumersAsync = true
+    };
+});
 builder.Services.AddScoped<IPersonServices, PersonServices>();
 builder.Services.AddScoped<IContactInformationServices, ContactInformationServices>();
-
+builder.Services.AddScoped<IReportServices, ReportServices>();
+builder.Services.AddSingleton<RabbitMQPublisher>();
+builder.Services.AddSingleton<RabbitMQClientService>();
 //builder.Services.AddAutoMapper(typeof(StartupBase));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

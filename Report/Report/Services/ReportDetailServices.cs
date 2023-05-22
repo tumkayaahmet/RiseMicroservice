@@ -46,7 +46,7 @@ namespace Report.Services
         {
             var updateReportDetail = _mapper.Map<ReportDetail>(reportDetailUpdateDto);
             updateReportDetail.ModifyDate = DateTime.Now;
-            updateReportDetail.ReportPath = "";
+            updateReportDetail.ReportPath = reportDetailUpdateDto.ReportPath;
             updateReportDetail.ReportStatus = ReportStatus.Completed;
             var result = await _reportDetailMongoCollection.FindOneAndReplaceAsync(x => x.Id == reportDetailUpdateDto.Id, updateReportDetail);
 
