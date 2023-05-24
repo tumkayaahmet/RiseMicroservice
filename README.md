@@ -1,9 +1,9 @@
-RiseMicroservice
-A Phone Directory application consisting of microservices:
-*In the Contact project, operations for adding and editing person and contact information are performed, and the generated report data is prepared and sent to the CreateFile service.
-*In the CreateFile project, the data received from the Contact project is prepared and published to the RabbitMQ queue.
-In the Report project, operations for listing report details are performed. The report data is fetched by listening to the RabbitMQ queue and saved as an Excel report to the respective file.
-
+RiseMicroservice<br/>
+A Phone Directory application consisting of microservices:<br/>
+*In the Contact project, operations for adding and editing person and contact information are performed, and the generated report data is prepared and sent to the CreateFile service.<br/>
+*In the CreateFile project, the data received from the Contact project is prepared and published to the RabbitMQ queue.<br/>
+In the Report project, operations for listing report details are performed. The report data is fetched by listening to the RabbitMQ queue and saved as an Excel report to the respective file.<br/>
+<br/>
 Prerequisites
 To install the Phone Directory application, you will need the following components:
 ASP.NET Core 6.0
